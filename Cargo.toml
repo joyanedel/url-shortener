@@ -4,6 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+actix-web = "4.8.0"
 rand = "0.8.5"
 redis = "0.26.1"
-sqlx = "0.8.0"
+sqlx = { version = "0.8.0", features = ["postgres", "runtime-tokio"] }
