@@ -1,21 +1,15 @@
-use rand::{distributions::Uniform, prelude::Distribution, thread_rng};
+use rand::{thread_rng, Rng};
 
-/// create an url of length `long` using base62 characters
+/// create an url of length `long` using characters from `alphabet`
 fn create_url(long: usize, alphabet: &str) -> String {
     let alphabet: Vec<char> = alphabet.chars().collect();
     let alphabet_length = alphabet.len();
-    let mut shortened_url = String::with_capacity(long);
 
-    let between = Uniform::from(0..alphabet_length);
     let mut rng = thread_rng();
-
-    while shortened_url.len() < long {
-        let alphabet_index = between.sample(&mut rng);
-        let letter = alphabet[alphabet_index];
-        shortened_url.push(letter);
-    }
-
-    shortened_url
+    (0..long)
+        .map(|_| rng.gen_range(0..alphabet_length))
+        .map(|idx| alphabet[idx])
+        .collect()
 }
 
 #[cfg(test)]
