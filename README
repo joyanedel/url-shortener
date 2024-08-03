@@ -1,0 +1,17 @@
+# URL Shortener
+
+The purpose of this project is to improve system design skills by building a URL shortener service.
+
+## Project scope
+
+The scope of this project consider the following:
+* Allow to create shortened versions of long urls.
+* Being redirect to the long url when short url is requested.
+* Shortened urls should be as small as possible.
+* The service are able to set a expire timestamp
+
+## Technologies used
+
+* PostgreSQL for storing the urls
+* Redis for storing the most visited urls
+* Actix for serving the http server
