@@ -1,4 +1,4 @@
-use actix_web::{post, web, App, HttpResponse, HttpServer, Responder};
+use actix_web::{get, http::header, post, web, App, HttpResponse, HttpServer, Responder};
 use serde::Deserialize;
 use sqlx::{postgres::PgPoolOptions, Pool, Postgres};
 use url_shortener::{
@@ -26,6 +26,7 @@ async fn main() -> std::io::Result<()> {
                 alphabet: SHORT_URL_ALPHABET.to_string(),
             }))
             .service(post_url)
+            .service(redirect_from_short_url)
     })
     .bind(("127.0.0.1", 8080))?
     .run()
@@ -65,5 +66,23 @@ async fn post_url(data: web::Data<ServerState>, info: web::Json<UrlRequest>) -> 
         HttpResponse::Ok().body(short_url)
     } else {
         HttpResponse::ServiceUnavailable().body("Sorry, we coiuldn't process your request now")
+    }
+}
+
+#[get("/u/{short_url}")]
+async fn redirect_from_short_url(
+    path: web::Path<(String,)>,
+    data: web::Data<ServerState>,
+) -> impl Responder {
+    let short_url = path.into_inner().0;
+    let url_entry_result = get_url_entry(&data.database_connection, &short_url).await;
+
+    if let Some(url_entry) = url_entry_result {
+        // Redirect::to(url_entry.long_url).temporary()
+        HttpResponse::TemporaryRedirect()
+            .insert_header((header::LOCATION, url_entry.long_url))
+            .finish()
+    } else {
+        HttpResponse::NotFound().body("The provided url doesn't exists in our system")
     }
 }

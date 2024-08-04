@@ -7,7 +7,7 @@ pub struct UrlEntry {
 }
 
 pub async fn get_url_entry(connection: &Pool<Postgres>, short_url: &str) -> Option<UrlEntry> {
-    sqlx::query_as::<_, UrlEntry>("SELECT short_url, long_url FROM urls WHERE short_url = ?")
+    sqlx::query_as::<_, UrlEntry>("SELECT short_url, long_url FROM urls WHERE short_url = $1")
         .bind(short_url)
         .fetch_one(connection)
         .await
