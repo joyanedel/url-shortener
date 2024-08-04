@@ -5,6 +5,7 @@ edition = "2021"
 
 [dependencies]
 actix-web = "4.8.0"
+anyhow = "1.0.86"
 rand = "0.8.5"
 redis = "0.26.1"
 serde = { version = "1.0.204", features = ["derive"] }

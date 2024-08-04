@@ -1,3 +1,4 @@
+use anyhow::Ok;
 use sqlx::{Pool, Postgres};
 
 #[derive(sqlx::FromRow)]
@@ -14,12 +15,19 @@ pub async fn get_url_entry(connection: &Pool<Postgres>, short_url: &str) -> Opti
         .ok()
 }
 
-pub async fn store_url_entry(connection: &Pool<Postgres>, url_entry: UrlEntry) -> Result<(), ()> {
-    sqlx::query("INSERT INTO urls (short_url, long_url) VALUES ($1, $2)")
+pub async fn store_url_entry(
+    connection: &Pool<Postgres>,
+    url_entry: UrlEntry,
+) -> anyhow::Result<()> {
+    let result = sqlx::query("INSERT INTO urls (short_url, long_url) VALUES ($1, $2)")
         .bind(url_entry.short_url)
         .bind(url_entry.long_url)
         .execute(connection)
         .await;
 
-    Ok(())
+    if result.is_ok() {
+        Ok(())
+    } else {
+        Err(anyhow::Error::msg(result.err().unwrap()))
+    }
 }
