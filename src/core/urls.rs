@@ -1,7 +1,7 @@
 use rand::{thread_rng, Rng};
 
 /// create an url of length `long` using characters from `alphabet`
-fn create_url(long: usize, alphabet: &str) -> Option<String> {
+pub fn create_url(long: usize, alphabet: &str) -> Option<String> {
     if alphabet.is_empty() {
         return None;
     }

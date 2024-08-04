@@ -1954,6 +1954,7 @@ dependencies = [
  "actix-web",
  "rand",
  "redis",
+ "serde",
  "sqlx",
 ]
 

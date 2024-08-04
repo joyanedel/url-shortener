@@ -7,4 +7,5 @@ edition = "2021"
 actix-web = "4.8.0"
 rand = "0.8.5"
 redis = "0.26.1"
+serde = { version = "1.0.204", features = ["derive"] }
 sqlx = { version = "0.8.0", features = ["postgres", "runtime-tokio"] }

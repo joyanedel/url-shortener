@@ -1,7 +1,4 @@
-use sqlx::{
-    postgres::{PgConnectOptions, PgPoolOptions},
-    PgConnection, Pool, Postgres,
-};
+use sqlx::{Pool, Postgres};
 
 #[derive(sqlx::FromRow)]
 pub struct UrlEntry {
