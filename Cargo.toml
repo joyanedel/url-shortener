@@ -8,5 +8,6 @@ actix-web = "4.8.0"
 anyhow = "1.0.86"
 rand = "0.8.5"
 redis = "0.26.1"
+rust-decouple = "0.1.0"
 serde = { version = "1.0.204", features = ["derive"] }
 sqlx = { version = "0.8.0", features = ["postgres", "runtime-tokio"] }

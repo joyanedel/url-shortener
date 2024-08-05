@@ -1,4 +1,5 @@
 use actix_web::{get, http::header, post, web, App, HttpResponse, HttpServer, Responder};
+use rust_decouple::config;
 use serde::Deserialize;
 use sqlx::{postgres::PgPoolOptions, Pool, Postgres};
 use url_shortener::{
@@ -13,9 +14,12 @@ struct ServerState {
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
+    let database_url: String = config!("DATABASE_URL");
+    let max_connections = config!("MAX_CONNECTIONS", 5u32);
+
     let pool = PgPoolOptions::new()
-        .max_connections(5)
-        .connect("postgres://postgres:postgres@localhost:5432/postgres")
+        .max_connections(max_connections)
+        .connect(&database_url)
         .await
         .expect("Couldn't establish connection with sql database");
 
